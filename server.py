@@ -13,19 +13,21 @@ from threading import Thread
 sys.path.append('quantum_performance')
 from quantum_performance import quantum_performance as QP
 
-if not os.path.exists('uploads'):
-    os.makedirs('uploads')
-
-if not os.path.exists('downloads'):
-    os.makedirs('downloads')
-
-if not os.path.exists('temp'):
-    os.makedirs('temp')
-
-app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 DOWNLOAD_FOLDER = 'downloads'
 TEMP_FOLDER = 'temp'
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+if not os.path.exists(DOWNLOAD_FOLDER):
+    os.makedirs(DOWNLOAD_FOLDER)
+
+if not os.path.exists(TEMP_FOLDER):
+    os.makedirs(TEMP_FOLDER)
+
+app = Flask(__name__)
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 128 * 1024
 
