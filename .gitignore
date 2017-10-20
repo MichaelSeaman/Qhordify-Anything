@@ -132,3 +132,5 @@ venv.bak/
 # user specific
 uploads/
 downloads/
+temp/
+qhordify_env/
