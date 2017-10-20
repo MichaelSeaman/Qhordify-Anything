@@ -44,9 +44,13 @@
                     <p>Give it a go:</p>
                         <form method="post" enctype="multipart/form-data">
                          <p><input type="file" id="midi_file" name="midi_file" style="visibility:hidden">
-                         </p><p><a class="btn btn-primary btn-lg" role="button" onclick="$('#midi_file').click();" style="background-color:FFFFFF;">Upload a MIDI File</a>
-                         <a class="btn btn-primary btn-lg" role="button" type="submit" style="background-color:455054;">Submit</a></p>
+                         </p><p><a id="upload" class="btn btn-primary btn-lg" role="button" onclick="$('#midi_file').click();" onclick="document.getElementByID("upload").style.color=DB425F" style="background-color:FFFFFF;">Upload a MIDI File</a>
+                         <input type="submit" style="background-color:455054;">Submit</input></p>
                         </form>
+                    <div id="uploaded" style="display:none;">
+                    <h2>MIDI File Locked and Loaded</h2>
+                    <p>Ready to go quantum. Click Submit to proceed</p>
+                    </div>
                 </div>
             </div>
         </div>
