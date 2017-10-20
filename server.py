@@ -27,7 +27,7 @@ UPLOAD_FOLDER = 'uploads'
 DOWNLOAD_FOLDER = 'downloads'
 TEMP_FOLDER = 'temp'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 128 * 1024
 
 print("Running ", sys.version)
 
@@ -37,23 +37,32 @@ def serve_main():
         return app.send_static_file('index.html')
 
     elif request.method == 'POST':
-        if 'midi_file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        f = request.files['midi_file']
-        filename = secure_filename(f.filename)
-        print("Recieved",filename)
+        try:
+            if 'midi_file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            f = request.files['midi_file']
+            filename = secure_filename(f.filename)
+            print("Recieved",filename)
 
-        upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
-            temp_filepath, out_filepath = setup_directories(filename)
+            upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
+                temp_filepath, out_filepath = setup_directories(filename)
 
-        f.save(in_filepath)
-        QP(in_filepath, temp_filepath, out_filepath)
-        del_thread = Thread(target=delayed_delete, args=(
-            30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
-        del_thread.start()
-        print(url_for('ready_file', filename=filename, ts_dir=stamp))
-        return redirect(url_for('ready_file', filename=filename, ts_dir=stamp))
+            f.save(in_filepath)
+            QP(in_filepath, temp_filepath, out_filepath)
+            del_thread = Thread(target=delayed_delete, args=(
+                30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
+            del_thread.start()
+            print(url_for('ready_file', filename=filename, ts_dir=stamp))
+            return redirect(url_for('ready_file', filename=filename, ts_dir=stamp))
+        except Exception as e:
+            print(e)
+            return redirect(url_for('serve_error'))
+
+
+@app.route('/error.html')
+def serve_error():
+    return app.send_static_file('error.html')
 
 @app.route('/downloads/<ts_dir>/<filename>')
 def ready_file(filename, ts_dir):
