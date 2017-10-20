@@ -11,7 +11,7 @@ from threading import Thread
 
 
 sys.path.append('quantum_performance')
-from quantum_performance.quantum_performance import *
+from quantum_performance import *
 
 if not os.path.exists('uploads'):
     os.makedirs('uploads')
