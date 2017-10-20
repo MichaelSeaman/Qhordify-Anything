@@ -11,7 +11,7 @@ from threading import Thread
 
 
 sys.path.append('quantum_performance')
-from quantum_performance import *
+from quantum_performance import quantum_performance as QP
 
 if not os.path.exists('uploads'):
     os.makedirs('uploads')
@@ -49,7 +49,7 @@ def serve_main():
                 temp_filepath, out_filepath = setup_directories(filename)
 
             f.save(in_filepath)
-            QP(in_filepath, temp_filepath, out_filepath)
+            run_sim(in_filepath, temp_filepath, out_filepath)
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
             del_thread.start()
@@ -80,23 +80,23 @@ def setup_directories(filename):
     return upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
         temp_filepath, out_filepath
 
-def QP(in_filepath, temp_filepath, out_filepath):
+def run_sim(in_filepath, temp_filepath, out_filepath):
     # run midi to csv
-    midi_to_csv(in_filepath, temp_filepath)
+    QP.midi_to_csv(in_filepath, temp_filepath)
     print("Creating temp midicsv file at ", temp_filepath)
 
     # prepping midicsv data for qsys
     print("Preprocessing Data")
-    tracklist, keysig = preprocess(temp_filepath)
+    tracklist, keysig = QP.preprocess(temp_filepath)
 
     print("Performing Qupdate")
-    #tracklist = quantum_update(tracklist)
+    tracklist = QP.quantum_update(tracklist)
 
     # Re-writing csv
     print("Updating CSV")
-    write_output(temp_filepath, tracklist)
+    QP.write_output(temp_filepath, tracklist)
 
-    csv_to_midi(temp_filepath, out_filepath)
+    QP.csv_to_midi(temp_filepath, out_filepath)
     print("Output at", out_filepath)
 
 def create_timestamp_dir(base_path):
