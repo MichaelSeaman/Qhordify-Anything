@@ -130,5 +130,5 @@ venv.bak/
 .mypy_cache/
 
 # user specific
-webserver/uploads/
-webserver/downloads/
+uploads/
+downloads/
