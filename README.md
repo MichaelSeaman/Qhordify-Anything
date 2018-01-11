@@ -15,3 +15,7 @@ The server can be started from a terminal with:
 gunicorn server:app -b localhost:8000
 ```
 or, more simply by running the script ```run.sh```. Passing the option ```-D``` to either of these commands allows them to be run as background daemon processes.
+
+## Updating the server:
+
+The remote AWS server can automatically be updated by running the script ```update_remote.sh```. This script SSH's to the remote AWS machine, updates server repo, and restarts gunicorn as daemon process.
