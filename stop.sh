@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pkill "gunicorn" -signal SIGTERM
+pkill "gunicorn"
