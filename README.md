@@ -18,4 +18,5 @@ or, more simply by running the script ```run.sh```. Passing the option ```-D``` 
 
 ## Updating the server:
 
-The remote AWS server can automatically be updated by running the script ```update_remote.sh```. This script SSH's to the remote AWS machine, updates server repo, and restarts gunicorn as daemon process.
+The remote AWS server can automatically be updated by running the script ```update_remote.sh```. This script SSH's to the remote AWS machine, updates server repo, and restarts gunicorn as daemon process. This action does require a login to the
+host specified in update_remote.sh.

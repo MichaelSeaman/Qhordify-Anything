@@ -13,6 +13,8 @@ echo \"Updating...\"
 cd ${REMOTE_REPO_DIR};
 echo \"Restarting...\"
 ./stop.sh;
-./run.sh -D;"
+./run.sh -D;
+sleep 1s;
+echo \"Restart complete.\";"
 
 ssh -t $HOST "${SCRIPT}"
