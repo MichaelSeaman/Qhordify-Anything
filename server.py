@@ -121,7 +121,7 @@ def create_timestamp_dir(base_path):
 
 def swap_extension(path, ext):
     pre, _ = os.path.splitext(path)
-    return pre + ext
+    return pre + "." + ext
 
 def delayed_delete(delay, paths):
     print("Started")
