@@ -59,8 +59,8 @@ def serve_main():
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
             del_thread.start()
-            print(url_for('ready_file', filename=filename, ts_dir=stamp))
-            return redirect(url_for('ready_file', filename=filename, ts_dir=stamp))
+            print(url_for('ready_file', filename=mp3_filename, ts_dir=stamp))
+            return redirect(url_for('ready_file', filename=mp3_filename, ts_dir=stamp))
         except Exception as e:
             print(e)
             return redirect(url_for('serve_error'))
