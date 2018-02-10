@@ -16,6 +16,7 @@ from quantum_performance import quantum_performance as QP
 UPLOAD_FOLDER = 'uploads'
 DOWNLOAD_FOLDER = 'downloads'
 TEMP_FOLDER = 'temp'
+SOUND_FONT = '/usr/share/sounds/sf2/FluidR3_GM.sf2'
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -48,10 +49,12 @@ def serve_main():
             print("Recieved",filename)
 
             upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
-                temp_filepath, out_filepath = setup_directories(filename)
+                temp_csv_filepath, temp_out_midi_filepath, temp_wav_filepath,  \
+                out_filepath = setup_directories(filename)
 
             f.save(in_filepath)
-            run_sim(in_filepath, temp_filepath, out_filepath)
+            run_sim(in_filepath, temp_csv_filepath, temp_out_midi_filepath)
+            midi_to_mp3(temp_out_midi_filepath, temp_wav_filepath, out_filepath)
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
             del_thread.start()
@@ -77,10 +80,13 @@ def setup_directories(filename):
     download_ts_dir, stamp = create_timestamp_dir(DOWNLOAD_FOLDER)
 
     in_filepath = safe_join(upload_ts_dir, filename)
-    temp_filepath = safe_join(temp_ts_dir, swap_extension(filename, "csv"))
-    out_filepath = safe_join(download_ts_dir, filename)
+    temp_csv_filepath = safe_join(temp_ts_dir, swap_extension(filename, "csv"))
+    temp_out_midi_filepath = safe_join(temp_ts_dir, filename)
+    temp_wav_filepath = safe_join(temp_ts_dir, swap_extension(filename, "wav"))
+    out_filepath = safe_join(download_ts_dir, swap_extension(filename, "mp3"))
     return upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
-        temp_filepath, out_filepath
+        temp_csv_filepath, temp_out_midi_filepath, temp_wav_filepath, \
+        out_filepath
 
 def run_sim(in_filepath, temp_filepath, out_filepath):
     # run midi to csv
@@ -100,6 +106,10 @@ def run_sim(in_filepath, temp_filepath, out_filepath):
 
     QP.csv_to_midi(temp_filepath, out_filepath)
     print("Output at", out_filepath)
+
+def midi_to_mp3(midi_file_in, temp_wav_filepath, mp3_file_out):
+    QP.midi_to_wav(midi_file_in, temp_wav_filepath, SOUND_FONT)
+    QP.wav_to_mp3(temp_wav_filepath, mp3_file_out)
 
 def create_timestamp_dir(base_path):
     stamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
