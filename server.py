@@ -84,6 +84,8 @@ def setup_directories(filename):
     temp_out_midi_filepath = safe_join(temp_ts_dir, filename)
     temp_wav_filepath = safe_join(temp_ts_dir, swap_extension(filename, "wav"))
     out_filepath = safe_join(download_ts_dir, swap_extension(filename, "mp3"))
+    print(temp_csv_filepath)
+    print(temp_wav_filepath)
     return upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
         temp_csv_filepath, temp_out_midi_filepath, temp_wav_filepath, \
         out_filepath
