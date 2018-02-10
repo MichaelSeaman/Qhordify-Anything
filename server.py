@@ -46,6 +46,7 @@ def serve_main():
                 return redirect(request.url)
             f = request.files['midi_file']
             filename = secure_filename(f.filename)
+            mp3_filename = swap_extension(filename, "mp3")
             print("Recieved",filename)
 
             upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
