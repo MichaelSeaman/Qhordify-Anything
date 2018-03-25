@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gunicorn server:app -b localhost:8000 "$@"
+gunicorn server:app -t 300 -b localhost:8000 "$@"
