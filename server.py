@@ -115,12 +115,13 @@ def run_sim(in_filepath, temp_filepath, temp_quantum_filepath, out_filepath):
     print("Updating CSV")
     QP.write_output(temp_filepath, tracklist, temp_quantum_filepath)
 
-    with open(temp_quantum_filepath, 'r') as f:
+    with open(temp_filepath, 'r') as f:
         test2 = f.read()
 
     print(test1[:10])
     print(test2[:10])
     print(test1==test2)
+    print(zip(test1, test2))
 
     print("CSV to MID for", temp_quantum_filepath, out_filepath)
     QP.csv_to_midi(temp_quantum_filepath, out_filepath)
@@ -129,8 +130,8 @@ def run_sim(in_filepath, temp_filepath, temp_quantum_filepath, out_filepath):
     with open(out_filepath, 'rb') as f:
         testm2 = f.read()
 
-    print(testm1[200:210])
-    print(testm2[200:210])
+    print(testm1[:10])
+    print(testm2[:10])
     print(testm1==testm2)
     print("Not getting to this line?")
 
