@@ -94,6 +94,9 @@ def run_sim(in_filepath, temp_filepath, out_filepath):
     QP.midi_to_csv(in_filepath, temp_filepath)
     print("Creating temp midicsv file at ", temp_filepath)
 
+    with open(temp_filepath, 'r') as f:
+        test1 = f.read()
+
     # prepping midicsv data for qsys
     print("Preprocessing Data")
     tracklist, keysig = QP.preprocess(temp_filepath)
@@ -104,6 +107,13 @@ def run_sim(in_filepath, temp_filepath, out_filepath):
     # Re-writing csv
     print("Updating CSV")
     QP.write_output(temp_filepath, tracklist)
+
+    with open(temp_filepath, 'r') as f:
+        test2 = f.read()
+
+    print(test1[:10])
+    print(test2[:10])
+    print(test1==test2)
 
     QP.csv_to_midi(temp_filepath, out_filepath)
     print("Output at", out_filepath)
