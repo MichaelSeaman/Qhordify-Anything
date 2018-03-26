@@ -54,6 +54,8 @@ def serve_main():
 
             f.save(in_filepath)
             run_sim(in_filepath, temp_csv_filepath, temp_out_midi_filepath)
+            print(temp_out_midi_filepath)
+            print(in_filepath)
             midi_to_mp3(temp_out_midi_filepath, temp_wav_filepath, out_filepath)
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
