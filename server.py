@@ -55,12 +55,11 @@ def serve_main():
             f.save(in_filepath)
             run_sim(in_filepath, temp_csv_filepath, temp_out_midi_filepath)
             midi_to_mp3(temp_out_midi_filepath, temp_wav_filepath, out_filepath)
-
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
             #del_thread.start()
-            print(url_for('ready_file', filename=filename, ts_dir=stamp))
-            return redirect(url_for('ready_file', filename=filename, ts_dir=stamp))
+            print(url_for('ready_file', filename=out_filename, ts_dir=stamp))
+            return redirect(url_for('ready_file', filename=out_filename, ts_dir=stamp))
         except Exception as e:
             print(e)
             return redirect(url_for('serve_error'))
@@ -72,7 +71,7 @@ def serve_error():
 
 @app.route('/downloads/<ts_dir>/<filename>')
 def ready_file(filename, ts_dir):
-    out_dir = os.path.join(TEMP_FOLDER, ts_dir)
+    out_dir = os.path.join(DOWNLOAD_FOLDER, ts_dir)
     return send_from_directory(out_dir, filename)
 
 def setup_directories(filename):
@@ -92,6 +91,10 @@ def setup_directories(filename):
 
 def run_sim(in_filepath, temp_filepath, out_filepath):
     # run midi to csv
+
+    with open(in_filepath, 'rb') as f:
+        testm1 = f.read()
+
     QP.midi_to_csv(in_filepath, temp_filepath)
     print("Creating temp midicsv file at ", temp_filepath)
 
@@ -118,6 +121,13 @@ def run_sim(in_filepath, temp_filepath, out_filepath):
 
     QP.csv_to_midi(temp_filepath, out_filepath)
     print("Output at", out_filepath)
+
+    with open(out_filepath, 'rb') as f:
+        testm2 = f.read()
+
+    print(testm1[:10])
+    print(testm2[:10])
+    print(testm1==testm2)
 
 def midi_to_mp3(midi_file_in, temp_wav_filepath, mp3_file_out):
     QP.midi_to_wav(midi_file_in, temp_wav_filepath, SOUND_FONT)
