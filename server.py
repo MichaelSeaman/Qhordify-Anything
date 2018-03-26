@@ -129,8 +129,8 @@ def run_sim(in_filepath, temp_filepath, temp_quantum_filepath, out_filepath):
     with open(out_filepath, 'rb') as f:
         testm2 = f.read()
 
-    print(testm1[:10])
-    print(testm2[:10])
+    print(testm1[200:210])
+    print(testm2[200:210])
     print(testm1==testm2)
     print("Not getting to this line?")
 
