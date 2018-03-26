@@ -119,13 +119,13 @@ def run_sim(in_filepath, temp_filepath, out_filepath):
     print(test2[:10])
     print(test1==test2)
 
+    print("CSV to MID for", temp_filepath, out_filepath)
     QP.csv_to_midi(temp_filepath, out_filepath)
     print("Output at", out_filepath)
 
     with open(out_filepath, 'rb') as f:
         testm2 = f.read()
 
-    print(testm2)
     print(testm1[:10])
     print(testm2[:10])
     print(testm1==testm2)
