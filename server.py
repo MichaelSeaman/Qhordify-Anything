@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory
+-from flask import Flask, request, send_from_directory
 from flask import safe_join, redirect, url_for
 from flask import after_this_request
 from werkzeug.utils import secure_filename
@@ -46,7 +46,6 @@ def serve_main():
                 return redirect(request.url)
             f = request.files['midi_file']
             filename = secure_filename(f.filename)
-            mp3_filename = swap_extension(filename, "mp3")
             print("Recieved",filename)
 
             upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
@@ -59,8 +58,8 @@ def serve_main():
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
             del_thread.start()
-            print(url_for('ready_file', filename=mp3_filename, ts_dir=stamp))
-            return redirect(url_for('ready_file', filename=mp3_filename, ts_dir=stamp))
+            print(url_for('ready_file', filename=out_filepath, ts_dir=stamp))
+            return redirect(url_for('ready_file', filename=out_filepath, ts_dir=stamp))
         except Exception as e:
             print(e)
             return redirect(url_for('serve_error'))

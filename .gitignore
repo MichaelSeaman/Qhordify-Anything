@@ -134,3 +134,4 @@ uploads/
 downloads/
 temp/
 qhordify_env/
+*.log
