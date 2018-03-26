@@ -50,7 +50,7 @@ def serve_main():
 
             upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
                 temp_csv_filepath, temp_out_midi_filepath, temp_wav_filepath,  \
-                out_filepath = setup_directories(filename)
+                out_filepath, out_filename = setup_directories(filename)
 
             f.save(in_filepath)
             run_sim(in_filepath, temp_csv_filepath, temp_out_midi_filepath)
@@ -58,8 +58,8 @@ def serve_main():
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
             del_thread.start()
-            print(url_for('ready_file', filename=out_filepath, ts_dir=stamp))
-            return redirect(url_for('ready_file', filename=out_filepath, ts_dir=stamp))
+            print(url_for('ready_file', filename=out_filename, ts_dir=stamp))
+            return redirect(url_for('ready_file', filename=out_filename, ts_dir=stamp))
         except Exception as e:
             print(e)
             return redirect(url_for('serve_error'))
@@ -84,9 +84,10 @@ def setup_directories(filename):
     temp_out_midi_filepath = safe_join(temp_ts_dir, filename)
     temp_wav_filepath = safe_join(temp_ts_dir, swap_extension(filename, "wav"))
     out_filepath = safe_join(download_ts_dir, swap_extension(filename, "mp3"))
+    out_filename = swap_extension(filename, "mp3")
     return upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
         temp_csv_filepath, temp_out_midi_filepath, temp_wav_filepath, \
-        out_filepath
+        out_filepath, out_filename
 
 def run_sim(in_filepath, temp_filepath, out_filepath):
     # run midi to csv
