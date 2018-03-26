@@ -49,11 +49,13 @@ def serve_main():
             print("Recieved",filename)
 
             upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
-                temp_csv_filepath, temp_out_midi_filepath, temp_wav_filepath,  \
+                temp_csv_filepath, temp_quantum_csv_filepath, \
+                temp_out_midi_filepath, temp_wav_filepath,  \
                 out_filepath, out_filename = setup_directories(filename)
 
             f.save(in_filepath)
-            run_sim(in_filepath, temp_csv_filepath, temp_out_midi_filepath)
+            run_sim(in_filepath, temp_csv_filepath, temp_quantum_csv_filepath, \
+                temp_out_midi_filepath)
             midi_to_mp3(temp_out_midi_filepath, temp_wav_filepath, out_filepath)
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
@@ -81,15 +83,16 @@ def setup_directories(filename):
 
     in_filepath = safe_join(upload_ts_dir, filename)
     temp_csv_filepath = safe_join(temp_ts_dir, swap_extension(filename, "csv"))
+    temp_quantum_csv_filepath = safe_join(temp_ts_dir, swap_extension(filename, "csvq"))
     temp_out_midi_filepath = safe_join(temp_ts_dir, filename)
     temp_wav_filepath = safe_join(temp_ts_dir, swap_extension(filename, "wav"))
     out_filepath = safe_join(download_ts_dir, swap_extension(filename, "mp3"))
     out_filename = swap_extension(filename, "mp3")
     return upload_ts_dir, temp_ts_dir, download_ts_dir, stamp, in_filepath, \
-        temp_csv_filepath, temp_out_midi_filepath, temp_wav_filepath, \
-        out_filepath, out_filename
+        temp_csv_filepath, temp_quantum_csv_filepath, temp_out_midi_filepath, \
+        temp_wav_filepath, out_filepath, out_filename
 
-def run_sim(in_filepath, temp_filepath, out_filepath):
+def run_sim(in_filepath, temp_filepath, temp_quantum_filepath, out_filepath):
     # run midi to csv
 
     with open(in_filepath, 'rb') as f:
@@ -110,17 +113,17 @@ def run_sim(in_filepath, temp_filepath, out_filepath):
 
     # Re-writing csv
     print("Updating CSV")
-    QP.write_output(temp_filepath, tracklist)
+    QP.write_output(temp_filepath, tracklist, temp_quantum_filepath)
 
-    with open(temp_filepath, 'r') as f:
+    with open(temp_quantum_filepath, 'r') as f:
         test2 = f.read()
 
     print(test1[:10])
     print(test2[:10])
     print(test1==test2)
 
-    print("CSV to MID for", temp_filepath, out_filepath)
-    QP.csv_to_midi(temp_filepath, out_filepath)
+    print("CSV to MID for", temp_quantum_filepath, out_filepath)
+    QP.csv_to_midi(temp_quantum_filepath, out_filepath)
     print("Output at", out_filepath)
 
     with open(out_filepath, 'rb') as f:
