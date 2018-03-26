@@ -125,9 +125,11 @@ def run_sim(in_filepath, temp_filepath, out_filepath):
     with open(out_filepath, 'rb') as f:
         testm2 = f.read()
 
+    print(testm2)
     print(testm1[:10])
     print(testm2[:10])
     print(testm1==testm2)
+    print("Not getting to this line?")
 
 def midi_to_mp3(midi_file_in, temp_wav_filepath, mp3_file_out):
     QP.midi_to_wav(midi_file_in, temp_wav_filepath, SOUND_FONT)
