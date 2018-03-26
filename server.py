@@ -121,7 +121,7 @@ def run_sim(in_filepath, temp_filepath, temp_quantum_filepath, out_filepath):
     print(test1[:10])
     print(test2[:10])
     print(test1==test2)
-    print(zip(test1, test2))
+    print(list(zip(test1, test2)))
 
     print("CSV to MID for", temp_quantum_filepath, out_filepath)
     QP.csv_to_midi(temp_quantum_filepath, out_filepath)
