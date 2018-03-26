@@ -59,7 +59,7 @@ def serve_main():
             midi_to_mp3(temp_out_midi_filepath, temp_wav_filepath, out_filepath)
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
-            #del_thread.start()
+            del_thread.start()
             print(url_for('ready_file', filename=out_filename, ts_dir=stamp))
             return redirect(url_for('ready_file', filename=out_filename, ts_dir=stamp))
         except Exception as e:
@@ -94,10 +94,6 @@ def setup_directories(filename):
 
 def run_sim(in_filepath, temp_filepath, temp_quantum_filepath, out_filepath):
     # run midi to csv
-
-    with open(in_filepath, 'rb') as f:
-        testm1 = f.read()
-
     QP.midi_to_csv(in_filepath, temp_filepath)
     print("Creating temp midicsv file at ", temp_filepath)
 
@@ -108,32 +104,18 @@ def run_sim(in_filepath, temp_filepath, temp_quantum_filepath, out_filepath):
     print("Preprocessing Data")
     tracklist, keysig = QP.preprocess(temp_filepath)
 
+    print(tracklist)
     print("Performing Qupdate")
     tracklist = QP.quantum_update(tracklist)
+    print(tracklist)
 
     # Re-writing csv
     print("Updating CSV")
     QP.write_output(temp_filepath, tracklist, temp_quantum_filepath)
 
-    with open(temp_filepath, 'r') as f:
-        test2 = f.read()
-
-    print(test1[:10])
-    print(test2[:10])
-    print(test1==test2)
-    print(list(zip(test1, test2)))
-
     print("CSV to MID for", temp_quantum_filepath, out_filepath)
     QP.csv_to_midi(temp_quantum_filepath, out_filepath)
     print("Output at", out_filepath)
-
-    with open(out_filepath, 'rb') as f:
-        testm2 = f.read()
-
-    print(testm1[:10])
-    print(testm2[:10])
-    print(testm1==testm2)
-    print("Not getting to this line?")
 
 def midi_to_mp3(midi_file_in, temp_wav_filepath, mp3_file_out):
     QP.midi_to_wav(midi_file_in, temp_wav_filepath, SOUND_FONT)
