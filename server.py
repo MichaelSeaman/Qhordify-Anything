@@ -57,7 +57,7 @@ def serve_main():
             midi_to_mp3(temp_out_midi_filepath, temp_wav_filepath, out_filepath)
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
-            del_thread.start()
+            #del_thread.start()
             print(url_for('ready_file', filename=out_filename, ts_dir=stamp))
             return redirect(url_for('ready_file', filename=out_filename, ts_dir=stamp))
         except Exception as e:
