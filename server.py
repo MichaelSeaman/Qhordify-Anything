@@ -55,11 +55,12 @@ def serve_main():
             f.save(in_filepath)
             run_sim(in_filepath, temp_csv_filepath, temp_out_midi_filepath)
             midi_to_mp3(temp_out_midi_filepath, temp_wav_filepath, out_filepath)
+
             del_thread = Thread(target=delayed_delete, args=(
                 30, [upload_ts_dir, temp_ts_dir, download_ts_dir]))
             #del_thread.start()
-            print(url_for('ready_file', filename=temp_out_midi_filepath, ts_dir=stamp))
-            return redirect(url_for('ready_file', filename=temp_out_midi_filepath, ts_dir=stamp))
+            print(url_for('ready_file', filename=filename, ts_dir=stamp))
+            return redirect(url_for('ready_file', filename=filename, ts_dir=stamp))
         except Exception as e:
             print(e)
             return redirect(url_for('serve_error'))
@@ -71,7 +72,7 @@ def serve_error():
 
 @app.route('/downloads/<ts_dir>/<filename>')
 def ready_file(filename, ts_dir):
-    out_dir = os.path.join(DOWNLOAD_FOLDER, ts_dir)
+    out_dir = os.path.join(TEMP_FOLDER, ts_dir)
     return send_from_directory(out_dir, filename)
 
 def setup_directories(filename):
